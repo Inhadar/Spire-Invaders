@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=3 uid="uid://rw3lew4cq7uv"]
+
+[ext_resource type="Script" uid="uid://b2gtttrgsiog5" path="res://Map/scripts/map.gd" id="1_k5idl"]
+[ext_resource type="Script" uid="uid://dasnqfc2ovr76" path="res://Map/scripts/mapgenerator.gd" id="2_mws28"]
+[ext_resource type="PackedScene" uid="uid://hfr0kewiicn2" path="res://Main/Tscn/GameArea.tscn" id="3_2cckn"]
+
+[sub_resource type="Gradient" id="Gradient_arg7d"]
+offsets = PackedFloat32Array(0, 0.298701, 1)
+colors = PackedColorArray(0.25, 0.02, 0.1695, 1, 0.885963, 0.385449, 9.62615e-07, 1, 1, 0.75, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7b7rq"]
+gradient = SubResource("Gradient_arg7d")
+width = 64
+
+[node name="TestMap" type="Node2D"]
+script = ExtResource("1_k5idl")
+
+[node name="Visuals" type="Node2D" parent="."]
+
+[node name="Lines" type="Node2D" parent="Visuals"]
+unique_name_in_owner = true
+
+[node name="Rooms" type="Node2D" parent="Visuals"]
+unique_name_in_owner = true
+
+[node name="MapGenerator" type="Node" parent="."]
+script = ExtResource("2_mws28")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(324, 576)
+
+[node name="MapBackgroun" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="TextureRect" type="TextureRect" parent="MapBackgroun"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1152.0
+offset_right = 504.0
+offset_bottom = 648.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5708
+texture = SubResource("GradientTexture1D_7b7rq")
+metadata/_edit_lock_ = true
+
+[node name="GameArea" parent="." instance=ExtResource("3_2cckn")]
+
+[connection signal="win" from="GameArea" to="." method="_on_game_area_win"]
+
+[editable path="GameArea"]

@@ -1,0 +1,86 @@
+[gd_scene load_steps=7 format=3 uid="uid://hfr0kewiicn2"]
+
+[ext_resource type="Script" uid="uid://bwfeam22fso2t" path="res://Main/Scripts/game_area.gd" id="1_cf66v"]
+[ext_resource type="PackedScene" uid="uid://ch8f6bouorppe" path="res://Player/SpaceShip.tscn" id="3_5kgmf"]
+
+[sub_resource type="Animation" id="Animation_vu4xr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_e66qe"]
+resource_name = "boss"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 1.96667),
+"transitions": PackedFloat32Array(1, -2.63902, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_at22o"]
+resource_name = "the_end"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5, 3),
+"transitions": PackedFloat32Array(1, -2.14355, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_d3uql"]
+_data = {
+&"RESET": SubResource("Animation_vu4xr"),
+&"boss": SubResource("Animation_e66qe"),
+&"the_end": SubResource("Animation_at22o")
+}
+
+[node name="GameArea" type="Node2D"]
+script = ExtResource("1_cf66v")
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="SpaceShip" parent="." instance=ExtResource("3_5kgmf")]
+position = Vector2(324, 952)
+
+[node name="Bullets" type="Node2D" parent="."]
+
+[node name="Label" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
+offset_right = 647.0
+offset_bottom = 271.0
+theme_override_font_sizes/font_size = 168
+text = "FINAL BOSS"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_d3uql")
+}
+
+[connection signal="win" from="." to="." method="_on_win"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
